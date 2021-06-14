@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+  .page_title {
+    font-size: 5rem;
+    font-weight: bold;
+    margin: 3rem;
+    margin-top: 4rem;
+    text-align: center;
+  }
+
+  .ui.form .field {
+    margin-bottom: 2rem;
+  }
+
+  .ui.form .field label {
+    font-size: 3.0rem;
+    margin-top: 3.0rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .ui.form .field input,
+  .ui.form .field textarea {
+    border-width: 3px;
+    color: grey;
+  }
+</style>
+<div class="ui padded centered grid">
+  <div class="eight wide computer fourteen wide mobile column">
+    <form action="" method="post" enctype="multipart/form-data" class="ui massive form">
+      {% csrf_token %}
+      <div class="field">
+        <label>商品</label>
+        <div class="ui left large icon input">
+          <i class="basketball ball large icon"></i>
+          <input placeholder="例：登山杖" type="{{ form.item.field.widget.input_type }}" name="{{ form.item.name }}">
+        </div>
+      </div>
+      <div class="field">
+        <label>分類</label>
+        <select class="ui search dropdown" style="height: 6rem;" name="{{ form.category.name }}">
+          <option value="">---選擇商品分類---</option>
+          {% for c in category %}
+          <option value="{{ c }}">{{ c }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label>縣市</label>
+        <div class="ui left large icon input">
+          <i class="map large icon"></i>
+          <input placeholder="{{ form.city.field.help_text }}" type="{{ form.city.field.widget.input_type }}"
+            name="{{ form.city.name }}">
+        </div>
+      </div>
+      <div class="field">
+        <label>鄉鎮市區</label>
+        <div class="ui left large icon input">
+          <i class="map signs large icon"></i>
+          <input placeholder="{{ form.district.field.help_text }}" type="{{ form.district.field.widget.input_type }}"
+            name="{{ form.district.name }}">
+        </div>
+      </div>
+      {% block custom %}
+      {% endblock %}
+      <button onclick="redirect()" id="submit_btn" class="massive ui button">
+        提交
+        <i class="paper plane right icon"></i>
+      </button>
+      <label id="submit_label" style="display: none;">表單提交中...請等待跳轉</label>
+    </form>
+  </div>
+</div>
+<script>
+  function redirect() {
+    document.getElementById("submit_btn").style.display = "none";
+    document.getElementById("submit_label").style.display = "block";
+  }
+</script>
+{% endblock %}
